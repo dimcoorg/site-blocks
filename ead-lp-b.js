@@ -7,8 +7,12 @@
     var box=document.createElement("div"); box.className="ea-block ea-"+key; box.innerHTML=p.html;
     if(ref&&where==="after") ref.insertAdjacentElement("afterend", box); else document.body.appendChild(box);
     try{ new Function(p.js)(); }catch(e){ console.log("ead-lp-b", key, e.message); } return box; }
-  function logoBox(){ var img=document.querySelector('img[src*="68dc1a2b6027c22158d6171a"]')||document.querySelector("img"); if(!img) return null;
+  function logoBox(){ var img=document.querySelector('img[src*="68dc1a2b6027c22158d6171a"]')||document.querySelector('img[data-src*="68dc1a2b6027c22158d6171a"]')||document.querySelector('[id^="image-"] img')||document.querySelector("img"); if(!img) return null;
     return img.closest('[id^="image-"]')||img.closest('[id^="col-"]')||img.parentElement; }
-  function run(){ if(document.getElementById("ea-hero")) return; var lb=logoBox(); var h=put("hero","after",lb); put("trust","after",h); put("bar","end"); }
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", run); else run();
+  var tries=0, done=false;
+  function run(){ if(done||document.getElementById("ea-hero")) return; var lb=logoBox();
+    if(!lb){ if(tries++<60) return setTimeout(run,250); lb=document.querySelector('[id^="section-"]')||document.body.firstElementChild; }   /* GHL paints the page after load; wait for the logo, then fall back to the first section */
+    done=true; var h=put("hero","after",lb); put("trust","after",h); if(!document.getElementById("ea-bar")) put("bar","end"); }
+  function start(){ if(!document.getElementById("ea-bar")) put("bar","end"); run(); }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", start); else start();
 })();
