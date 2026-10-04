@@ -18,8 +18,6 @@
     if(!document.getElementById("ea-hero")){ var hb=put("hero","end",h); put("trust","end",h); }
     else if(!document.getElementById("ea-trust")) put("trust","end",h);
     if(!document.getElementById("ea-bar")) put("bar","end");
-    /* widget heading swap (Nam 10/4): "Schedule Ducts & Vents Cleaning Now" -> "Pick Your Package, Then Your Time"; re-applied after GHL's repaint like the blocks */
-    var hs=document.querySelectorAll('[id^="heading-"]'); for(var i=0;i<hs.length;i++){ if(/Schedule Ducts\s*&\s*Vents Cleaning Now/i.test(hs[i].textContent||"")){ var tn=null, walker=document.createTreeWalker(hs[i], NodeFilter.SHOW_TEXT); while((tn=walker.nextNode())){ if(/Schedule Ducts/i.test(tn.nodeValue)){ tn.nodeValue=tn.nodeValue.replace(/Schedule Ducts\s*&\s*Vents Cleaning Now/i,"Pick Your Package, Then Your Time"); } } } }
     return true; }
   var t0=Date.now(); function tick(){ try{ ensure(); }catch(e){} if(Date.now()-t0<60000) setTimeout(tick, 400); }
   function start(){ tick(); try{ new MutationObserver(function(){ if(Date.now()-t0<120000 && !document.getElementById("ea-hero")) ensure(); }).observe(document.body,{childList:true,subtree:true}); }catch(e){} }
