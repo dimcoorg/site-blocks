@@ -1,5 +1,5 @@
 /* EverGreen Air Ducts landing page TEST 2 · built 2026-10-10 by EAD/landing_b2/build.py · hosted on GitHub Pages.
-   Page lines (three Custom Code elements, same file, different data-block):
+   Page lines (three Custom Code elements, same file, different data-block). ead-lp-b.js (the test-1 line, no data-block) serves the same file and renders "top":
      <script src="https://dimcoorg.github.io/site-blocks/ead-lp-b2.js" data-block="top" defer></script>
      <script src="https://dimcoorg.github.io/site-blocks/ead-lp-b2.js" data-block="packages" defer></script>
      <script src="https://dimcoorg.github.io/site-blocks/ead-lp-b2.js" data-block="trust" defer></script>
@@ -18,10 +18,11 @@
     if(!document.getElementById("eb2-font")){ var l=document.createElement("link"); l.id="eb2-font"; l.rel="stylesheet"; l.href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@500;600;700;800;900&display=swap"; document.head.appendChild(l); } }
   /* ---- blocks ---- */
   function host(tag){ return tag.closest('[id^="custom-code-"]')||tag.parentNode; }
-  function render(tag){ var h=host(tag); if(!h||h.querySelector(".eb2")) return; var kind=tag.getAttribute("data-block")||"top"; if(!T[kind]) return;
+  function render(tag,kindOverride){ var h=host(tag); if(!h||h.querySelector(".eb2")) return; var kind=kindOverride||tag.getAttribute("data-block")||"top"; if(!T[kind]) return;
     var box=document.createElement("div"); box.className="eb2 eb2-"+kind; box.setAttribute("data-geo","loading"); box.innerHTML=T[kind]; h.appendChild(box);
     if(kind==="top"){ geo(box); fit(box); jump(box); } }
-  function scan(){ css(); var tags=document.querySelectorAll('script[src*="ead-lp-b2"]'); for(var i=0;i<tags.length;i++) render(tags[i]); phone(); widget(); }
+  /* tags with data-block render in place; the test-1 line (ead-lp-b.js, no data-block) = "top", last one on the page wins (the copy inside the GTM element in section 1 is ignored) */
+  function scan(){ css(); var tags=document.querySelectorAll('script[src*="ead-lp-b"]'), legacy=[]; for(var i=0;i<tags.length;i++){ var t=tags[i]; if(/ead-lp-heading/.test(t.src||"")) continue; if(t.getAttribute("data-block")) render(t); else legacy.push(t); } if(legacy.length) render(legacy[legacy.length-1],"top"); phone(); widget(); }
   /* header phone -> green (first section's tel link; id fallback for the known heading) */
   function phone(){ var sec=$('[id^="section-"]'); var a=sec&&sec.querySelector('a[href^="tel"]'); var h=a&&(a.closest('[id^="heading-"]')||a); if(!h) h=$("#heading-mRL-uD1Ili"); if(h&&!h.classList.contains("eb2-phone")) h.classList.add("eb2-phone"); }
   /* headline: one line when it fits at >= 22px, else two balanced lines */
