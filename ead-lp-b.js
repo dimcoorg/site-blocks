@@ -37,7 +37,7 @@
   /* phones: a sticky copy of the Book Online button at the bottom of the screen once the real one scrolls away; hides while the form is on screen */
   function sticky(){ if(window.__eb2sticky||!$("#eb2-btn")) return; window.__eb2sticky=1;
     var st=document.createElement("a"); st.className="eb2-btn eb2-sticky"; st.href="#calendarAppointmentBookingMain"; st.innerHTML="Click Here To Book Online &darr;"; st.addEventListener("click",goForm); document.body.appendChild(st);
-    var formSeen=false; try{ var io=new IntersectionObserver(function(en){ en.forEach(function(x){ formSeen=x.isIntersecting; }); upd(); },{threshold:0}); var w=$("#calendarAppointmentBookingMain"); if(w) io.observe(w); var h=$(".eb2-wh"); if(h) io.observe(h); }catch(e){}
+    var seen={}, formSeen=false; try{ var io=new IntersectionObserver(function(en){ en.forEach(function(x){ seen[x.target===w?"w":"h"]=x.isIntersecting; }); formSeen=!!(seen.w||seen.h); upd(); },{threshold:0}); var w=$("#calendarAppointmentBookingMain"); if(w) io.observe(w); var h=$(".eb2-wh"); if(h) io.observe(h); }catch(e){}
     function upd(){ var b=$("#eb2-btn"); if(!b){ st.classList.remove("on"); return; } var r=b.getBoundingClientRect(); var past=r.bottom<0; st.classList.toggle("on",past&&!formSeen&&window.innerWidth<768); }
     window.addEventListener("scroll",upd,{passive:true}); window.addEventListener("resize",upd); upd(); }
   /* pick-first reveal: a checked package, or a Continue tap, shows the rest of the form */
