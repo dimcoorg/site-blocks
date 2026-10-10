@@ -63,7 +63,8 @@
     [1,2].forEach(function(n){ var a=g[n]; a.forEach(function(k){ k.classList.add("eb2-s"+n); }); if(a.length){ a[0].classList.add("eb2-first"); a[0].setAttribute("data-eb2h",n===1?"Pick your package":"Your details"); a[0].setAttribute("data-eb2n",String(n)); a[a.length-1].classList.add("eb2-last"); } }); }
   /* the page heading above the widget + the page's own headline font, read at runtime so the blocks match it */
   function heads(){ var all=[].slice.call(document.querySelectorAll('[id^="heading-"] h1,[id^="heading-"] h2,[id^="heading-"] h3,[id^="heading-"] h4')); var ref=all.filter(function(h){ return /What Our Customers|Our Specials/i.test(h.innerText||""); })[0]||all[0];
-    if(ref){ var cs=getComputedStyle(ref), r=document.documentElement.style; r.setProperty("--eb2-hf",cs.fontFamily); r.setProperty("--eb2-hw",cs.fontWeight); r.setProperty("--eb2-ls",cs.letterSpacing==="normal"?"0":cs.letterSpacing); }
+    /* family from any page heading; weight + spacing only from the "Our Specials" heading (the section headings on this page are Montserrat 900, -1px; other headings vary), else the CSS defaults 900 / -1px */
+    if(ref){ var cs=getComputedStyle(ref), r=document.documentElement.style; r.setProperty("--eb2-hf",cs.fontFamily); if(/Our Specials/i.test(ref.innerText||"")){ r.setProperty("--eb2-hw",cs.fontWeight); r.setProperty("--eb2-ls",cs.letterSpacing==="normal"?"0":cs.letterSpacing); } }
     document.querySelectorAll('[id^="heading-"]').forEach(function(h){ if(/Pick Your Package/i.test(h.innerText||"")&&!h.classList.contains("eb2-wh")) h.classList.add("eb2-wh"); }); }
   function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
   window.__eb2={scan:scan};
